@@ -5,8 +5,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaGoogle } from "react-icons/fa";
 import Card from '../../components/card/Card';
 import { auth } from "../../firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+
 import Loader from '../../components/loader/Loader';
+import {
+    GoogleAuthProvider,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+  } from "firebase/auth";
 import { toast } from 'react-toastify';
 const Login = () => {
     
@@ -37,6 +42,25 @@ const Login = () => {
                 toast.error(error.message)
             });
     }
+    // Login With Google
+    const provider = new GoogleAuthProvider();
+    const signInWithGoogle=() =>{
+        signInWithPopup(auth, provider)
+  .then((result) => {
+    // The signed-in user info.
+    const user = result.user;
+    toast.success("Login Succcesfull...")
+    navigate("/")
+  }).catch((error) => {
+    // Handle Errors here.
+    toast.error(error.message)
+    
+    // ...
+  });
+
+        
+
+    }
     return (
         <>
         {isLoading && <Loader />}
@@ -61,6 +85,8 @@ const Login = () => {
                     </form>
                     <button
                         className="--btn --btn-danger --btn-block"
+
+                        onClick={signInWithGoogle}
 
                     >
                         <FaGoogle color="#fff" /> Login With Google
