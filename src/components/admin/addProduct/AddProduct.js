@@ -30,9 +30,8 @@ const AddProducts = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const [product, setProduct] = useState(() => {
-    const newState = detectForm(id, { ...initialState }, productEdit);
-    return newState;
+  const [product, setProduct] = useState({
+    ...initialState
   });
   const [uploadProgress, setUploadProgress] = useState(0);
   const handleInputChange = (e) => {
