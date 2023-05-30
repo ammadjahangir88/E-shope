@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Components
 import { Header, Footer } from './components'
 // Pages
-import { Home, Contact, Login, Register, Reset, Admin } from './pages'
+import { Home, Contact, Login, Register, Reset, Admin,Cart } from './pages'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -34,6 +34,7 @@ function App() {
           />
 
           <Route path='/product-details/:id' element={<ProductDetails />} />
+          <Route path='/cart' element={<Cart />} />
 
 
         </Routes>
