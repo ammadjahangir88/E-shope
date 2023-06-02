@@ -11,3 +11,5 @@ export {default as Reset} from './auth/Reset'
 export { default as Admin } from "./admin/Admin";
 
 export { default as Cart } from "./cart/Cart";
+
+export { default as CheckoutDetails } from "./checkout/Checkout";

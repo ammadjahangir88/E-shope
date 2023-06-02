@@ -3,7 +3,7 @@ import Card from '../../card/Card'
 import styles from './ProductItem.module.scss'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { ADD_TO_CART, DECREASE_CART } from '../../../redux/slice/CartSlice'
+import { ADD_TO_CART, CALCULATE_TOTAL_QUANTITY, DECREASE_CART } from '../../../redux/slice/CartSlice'
 
 const ProductItem = ({product, grid,id, name,price,desc, imageURL}) => {
   const dispatch= useDispatch()
@@ -19,6 +19,8 @@ const ProductItem = ({product, grid,id, name,price,desc, imageURL}) => {
   const addToCart= (product)=>{
 
     dispatch(ADD_TO_CART(product))
+    dispatch(CALCULATE_TOTAL_QUANTITY())
+  
   }
 
   return (

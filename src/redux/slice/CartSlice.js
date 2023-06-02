@@ -5,6 +5,7 @@ const initialState = {
     cartItems: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [],
     cartTotalQuantity: 0,
     cartTotalAmount: 0,
+    previousURL: "",
 
 }
 
@@ -13,7 +14,7 @@ const CartSlice = createSlice({
   initialState,
   reducers: {
     ADD_TO_CART(state,action){
-        console.log(action.payload)
+        
         const productIndex=state.cartItems.findIndex((item)=> item.id === action.payload.id)
 
         if (productIndex >=0)
@@ -27,7 +28,7 @@ const CartSlice = createSlice({
         else{
              //Item doesn't exists in the cart
              //Add Item to the cart
-             const tempProduct = {... action.payload, cartQuantity:1}
+             const tempProduct = {...action.payload, cartQuantity:1}
              state.cartItems.push(tempProduct)
              toast.success(`${action.payload.name}  Added to Cart`,{position: "top-left"})
 
@@ -90,10 +91,26 @@ const CartSlice = createSlice({
         state.cartTotalAmount=totalAmount
 
       }
+      ,CALCULATE_TOTAL_QUANTITY(state,action){
+        const array = [];
+        state.cartItems.map((item) => {
+          const { cartQuantity } = item;
+          const quantity = cartQuantity;
+          return array.push(quantity);
+        });
+        const totalQuantity = array.reduce((a, b) => {
+          return a + b;
+        }, 0);
+        state.cartTotalQuantity = totalQuantity;
+      },
+      SAVE_URL(state, action) {
+        console.log(action.payload);
+        state.previousURL = action.payload;
+      },
   }
 });
 
-export const {ADD_TO_CART, DECREASE_CART,CLEAR_CART, REMOVE_FROM_CART ,CALCULATE_SUBTOTAL} = CartSlice.actions
+export const {ADD_TO_CART, DECREASE_CART,CLEAR_CART, REMOVE_FROM_CART ,CALCULATE_SUBTOTAL,CALCULATE_TOTAL_QUANTITY,SAVE_URL} = CartSlice.actions
 
 
 export  const selectCartItems =(state)=> state.cart.cartItems
@@ -102,5 +119,7 @@ export  const selectCartTotalQuantity =(state)=> state.cart.cartTotalQuantity
 
 
 export  const selectCartTotalAmount =(state)=> state.cart.cartTotalAmount
+
+export  const selectPreviousURL= (state)=>state.cart.previousURL;
 
 export default CartSlice.reducer

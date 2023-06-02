@@ -10,7 +10,6 @@ import spinnerImg from "../../assets/spinner.jpg";
 const Product = () => {
   const {data,isLoading} =useFetchCollection("products")
   const products =useSelector(selectProducts)
-  console.log(products)
 
   const dispatch = useDispatch()
 

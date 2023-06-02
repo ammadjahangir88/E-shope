@@ -1,34 +1,57 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { ADD_TO_CART, CALCULATE_SUBTOTAL, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems, selectCartTotalAmount, selectCartTotalQuantity } from '../../redux/slice/CartSlice';
+import { ADD_TO_CART, CALCULATE_SUBTOTAL, CALCULATE_TOTAL_QUANTITY, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, SAVE_URL, selectCartItems, selectCartTotalAmount, selectCartTotalQuantity } from '../../redux/slice/CartSlice';
 import styles from "./Cart.module.scss";
 import {FaTrashAlt}  from 'react-icons/fa'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Card from '../../components/card/Card';
+import { selectIsLoggedIN } from '../../redux/slice/AuthSlice';
 
 const Cart = () => {
   const cartItems = useSelector(selectCartItems)
   const cartTotalAmount =useSelector(selectCartTotalAmount)
   const cartTotalQuantity =useSelector(selectCartTotalQuantity)
   const dispatch=useDispatch()
+  const isLoggedIn =useSelector(selectIsLoggedIN)
+
+  const navigate=useNavigate()
 
   useEffect(()=>{
     dispatch(CALCULATE_SUBTOTAL())
   },[dispatch,cartItems])
   const increaseCart=(cart)=>{
     dispatch(ADD_TO_CART(cart));
+    dispatch(CALCULATE_TOTAL_QUANTITY());
+ 
 
   }
   const decreaseCart=(cart)=>{
     dispatch(DECREASE_CART(cart))
+    dispatch(CALCULATE_TOTAL_QUANTITY());
+   
   }
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
   const clearCart=()=>{
-    alert("HELLd9")
+  
       dispatch(CLEAR_CART())
+      dispatch(CALCULATE_TOTAL_QUANTITY());
 
   }
   const removeFromCart = (cart) => {
     dispatch(REMOVE_FROM_CART(cart));
+    dispatch(CALCULATE_TOTAL_QUANTITY());
+  };
+  const url = window.location.href;
+
+  const checkout = () => {
+    if (isLoggedIn) {
+      navigate("/checkout-details");
+    } else {
+      dispatch(SAVE_URL(url));
+      navigate("/login");
+    }
   };
   return (
     <section>
@@ -113,7 +136,7 @@ const Cart = () => {
 
                 </div>
                 <p>Tax and shipping calculated at checkout</p>
-                <button className='--btn --btn-primary --btn-block'>Checkout</button>
+                <button className='--btn --btn-primary --btn-block' onClick={checkout}>Checkout</button>
 
               </Card>
 

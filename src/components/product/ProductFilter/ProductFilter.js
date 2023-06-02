@@ -40,7 +40,7 @@ const ProductFilter = () => {
     setBrand("All");
     setPrice(maxPrice);
   };
-  console.log(allCategories)
+ 
   return (
     <div className={styles.filter}>
       <h4>Categories</h4>

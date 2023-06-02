@@ -29,6 +29,7 @@ const productSlice = createSlice({
       const min=Math.min(...array)
       state.minPrice=min
       state.maxPrice=max
+      
     }
   }
 });
