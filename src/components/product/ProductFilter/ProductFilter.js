@@ -11,6 +11,8 @@ const ProductFilter = () => {
   const [price, setPrice] = useState(3000);
   const minPrice = useSelector(selectMinPrice);
   const maxPrice = useSelector(selectMaxPrice);
+  console.log(products,"AKks")
+  console.log(minPrice)
 
   const allCategories =[
     "All",

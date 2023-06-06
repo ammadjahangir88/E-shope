@@ -5,16 +5,25 @@ import { db, storage } from "../../../firebase/config";
 import { toast } from 'react-toastify';
 import styles from './ProductDetails.module.scss'
 import spinnerImg from "../../../assets/spinner.jpg";
-
+import useFetchCollection from '../../../customHooks/useFetchCollection';
+import useFetchDocument from '../../../customHooks/useFetchDocument';
+import Card from '../../card/Card';
+import StarsRating from "react-star-rate";
 const ProductDetails = () => {
   const { id } = useParams()
   // const isCartAdded = cartItems.findIndex((cart) => {
   //   return cart.id === id;
   // });
   const [product, setProduct] = useState(null)
+  const {document}=useFetchDocument("products",id)
+  const  {data}= useFetchCollection("reviews")
+  const filteredReviews= data.filter((review)=> review.productID === id )
   useEffect(() => {
-    getProduct()
-  }, [])
+    setProduct(document)
+  }, [document])
+
+ 
+  console.log(data)
 
   const getProduct = async () => {
     const docRef = doc(db, "products", id);
@@ -79,6 +88,39 @@ const ProductDetails = () => {
             </div>
           </>
         )}
+        <Card cardClass={styles.card}>
+          <h3>Product Review</h3>
+          <div>
+            {
+            filteredReviews.length===0 ?(
+                <p>There are no Reviews for the product yest</p>
+              ):(
+                <>
+                {
+                  filteredReviews.map((item)=>{
+                    const {rate,review,reviewDate,userName}=item  
+                    return(
+                      <div className={styles.review}>
+                        <StarsRating  value={rate} />
+                        <p>{review}</p>
+                        <span>
+                          <b>{reviewDate}</b>
+                        </span>
+                        <span>
+                          <b>by {userName}</b>
+                        </span>
+
+                      </div>
+                    )
+
+                  })
+                }
+                </>
+              )
+            }
+          </div>
+
+        </Card>
 
       </div>
     </section>

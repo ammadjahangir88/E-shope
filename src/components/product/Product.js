@@ -8,22 +8,25 @@ import useFetchCollection from '../../customHooks/useFetchCollection';
 import spinnerImg from "../../assets/spinner.jpg";
 
 const Product = () => {
-  const {data,isLoading} =useFetchCollection("products")
-  const products =useSelector(selectProducts)
+    const {data,isLoading} =useFetchCollection("products")
+    const products =useSelector(selectProducts)
 
-  const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
-  useEffect(()=>{
-          dispatch(
-          STORE_PRODUCTS({
-            products : data,
-          }));
+    useEffect(()=>{
+      console.log(data,"jkjd")
+            dispatch(
+              
+            STORE_PRODUCTS({
 
-          dispatch(GET_PRICE_RANGE({
-            products:data
-          }))
+              products : data,
+            }));
 
-  },[dispatch,data])
+            dispatch(GET_PRICE_RANGE({
+              products:data
+            }))
+
+    },[dispatch,data])
   return (
     <section>
       <div className={`container ${styles.product}`}>

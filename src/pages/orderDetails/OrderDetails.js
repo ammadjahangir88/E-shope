@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import useFetchDocument from "../../../customHooks/useFetchDocument";
-import spinnerImg from "../../../assets/spinner.jpg";
+import useFetchDocument from "../../customHooks/useFetchDocument";
+import spinnerImg from "../../assets/spinner.jpg";
 import styles from "./OrderDetails.module.scss";
-
-import ChangeOrderStatus from "../changeOrderStatus/ChangeOrderStatus";
 const OrderDetails = () => {
   const [order, setOrder] = useState(null);
   const { id } = useParams();
@@ -16,10 +14,10 @@ const OrderDetails = () => {
 
   return (
     <section>
-      <div className={styles.table}>
-        <h2>Orders  Detail</h2>
+      <div className={`container ${styles.table}`}>
+        <h2>Order Details</h2>
         <div>
-          <Link to="/admin/orders">&larr; Back To Orders</Link>
+          <Link to="/order-history">&larr; Back To Orders</Link>
         </div>
         <br />
         {order === null ? (
@@ -35,17 +33,6 @@ const OrderDetails = () => {
             <p>
               <b>Order Status</b> {order.orderStatus}
             </p>
-            <p>
-              <b>Shipping Address</b>
-              
-              <br />
-              Address: {order.shippingAddress.line1}, {order.shippingAddress.line2},{order.shippingAddress.city}
-              <br />
-              State: {order.shippingAddress.state}
-              <br />
-              Country: {order.shippingAddress.country}
-
-            </p>
             <br />
             <table>
               <thead>
@@ -55,7 +42,7 @@ const OrderDetails = () => {
                   <th>Price</th>
                   <th>Quantity</th>
                   <th>Total</th>
-                  
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,7 +66,13 @@ const OrderDetails = () => {
                       <td>{price}</td>
                       <td>{cartQuantity}</td>
                       <td>{(price * cartQuantity).toFixed(2)}</td>
-                     
+                      <td className={styles.icons}>
+                        <Link to={`/review-product/${id}`}>
+                          <button className="--btn --btn-primary">
+                            Review Product
+                          </button>
+                        </Link>
+                      </td>
                     </tr>
                   );
                 })}
@@ -87,11 +80,9 @@ const OrderDetails = () => {
             </table>
           </>
         )}
-        <ChangeOrderStatus order={order} id={id} />
       </div>
-      
     </section>
   );
-}
+};
 
-export default OrderDetails
+export default OrderDetails;
